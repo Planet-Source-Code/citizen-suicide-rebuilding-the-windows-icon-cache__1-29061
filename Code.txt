@@ -1,0 +1,29 @@
+''''''''''''''''''''''''''''''''''''''
+' Required API and constant declares '
+''''''''''''''''''''''''''''''''''''''
+
+Public Declare Function SendMessageTimeout Lib "user32" Alias "SendMessageTimeoutA" _
+	(ByVal hwnd As Long, ByVal msg As Long, _
+	ByVal wParam As Long, ByVal lParam As Long, _
+	ByVal fuFlags As Long, ByVal uTimeout As Long, _
+	lpdwResult As Long) As Long
+
+'SendMessageTimeout values
+Public Const HWND_BROADCAST As Long = &HFFFF&
+Public Const WM_SETTINGCHANGE As Long = &H1A
+Public Const SPI_SETNONCLIENTMETRICS As Long = &H2A
+Public Const SMTO_ABORTIFHUNG As Long = &H2
+
+Public Const HKEY_CLASSES_ROOT As Long = &H80000000
+
+''''''''''''''''''''''''
+' Useful code snippets '
+''''''''''''''''''''''''
+
+KeyType = HKEY_CURRENT_USER
+KeyName = "Control Panel\Desktop\WindowMetrics"
+Value = "Shell Icon Size" '(or "Shell Icon BPP")
+
+
+Call SendMessageTimeout(HWND_BROADCAST, WM_SETTINGCHANGE, SPI_SETNONCLIENTMETRICS, _
+	0&, SMTO_ABORTIFHUNG,10000&, success)
