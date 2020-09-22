@@ -1,0 +1,26 @@
+In windows 32bit all icons being used by the shell are stored in memory in what is known as the icon cache. Ussually this only gets rebuilt when the program starts up (although windows does a little bit of cleaning up of un-used icons at run-time) and so therefore any change to the windows registry default icons does nothing until windows has restarted.
+
+Using the technique listed here you should be able to produce code that can force windows to rebuild this icon cache, and therefore display any changes at run-time.
+
+I must stress that this technique is not perfect and can produce some strange results, i've noticed that it can make the little shortcut arrow icon appear as a blank box 'behind' the shortcut icon. It's up to you whether you want to use this code or let the user wait to reboot before they see your changes to thier icons.
+
+Anyway...
+
+As it appears there is no single windows api to achieve this, because of this you have to be a little bit clever :)
+To do this you must follow these steps:
+
+(1) Get the value held in "HKEY_CURRENT_USER\
+Control Panel\Desktop\WindowMetrics Registry key".
+You'll want the value held in "Shell Icon Size" (if this throws up an error try "Shell Icon BPP")
+
+(2) Subtract 0ne from this number
+
+(3) Write the number back to the registry
+
+(4) Call SendMessageTimeout HWND_BROADCAST
+
+(5) Reset the key to its original setting
+
+(6) call SendMessageTimeout HWND_BROADCAST once again
+
+Thats it! Theres plenty of articals and source code on this site to change registry entries just do a quick search.
